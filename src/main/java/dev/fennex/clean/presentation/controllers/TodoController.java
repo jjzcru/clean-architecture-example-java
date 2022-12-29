@@ -1,6 +1,7 @@
 package dev.fennex.clean.presentation.controllers;
 
 import dev.fennex.clean.domain.interactors.AddTodoUseCase;
+import dev.fennex.clean.domain.interactors.CompleteTodoUseCase;
 import dev.fennex.clean.domain.interactors.GetAllTodosUseCase;
 import dev.fennex.clean.domain.interactors.GetTodoUseCase;
 import dev.fennex.clean.domain.model.Todo;
@@ -76,7 +77,22 @@ public class TodoController {
             return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
         }
     }
-    // TODO Complete a to by id
+    @PutMapping(
+            value = "/{id}/complete",
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<?> complete(@PathVariable(value="id") String id) {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CompleteTodoUseCase useCase = new CompleteTodoUseCase();
+        useCase.userId = userId;
+        useCase.id = id;
+
+        try {
+            return ResponseEntity.ok().body(useCase.execute());
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
+        }
+    }
     // TODO Delete a To-Do
 }
 

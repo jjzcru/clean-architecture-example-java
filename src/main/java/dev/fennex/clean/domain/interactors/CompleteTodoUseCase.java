@@ -1,5 +1,6 @@
 package dev.fennex.clean.domain.interactors;
 
+import dev.fennex.clean.data.repository.TodoDataMemoryRepository;
 import dev.fennex.clean.domain.model.Todo;
 import dev.fennex.clean.domain.repository.TodoRepository;
 
@@ -8,6 +9,10 @@ public class CompleteTodoUseCase {
     public String id;
     public String userId;
 
+
+    public CompleteTodoUseCase() {
+        this.repository = new TodoDataMemoryRepository();
+    }
 
     public CompleteTodoUseCase(TodoRepository repository) {
         this.repository = repository;
