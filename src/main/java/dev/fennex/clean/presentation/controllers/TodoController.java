@@ -2,6 +2,7 @@ package dev.fennex.clean.presentation.controllers;
 
 import dev.fennex.clean.domain.interactors.AddTodoUseCase;
 import dev.fennex.clean.domain.interactors.GetAllTodosUseCase;
+import dev.fennex.clean.domain.interactors.GetTodoUseCase;
 import dev.fennex.clean.domain.model.Todo;
 import dev.fennex.clean.presentation.controllers.error.RequestError;
 import org.springframework.http.MediaType;
@@ -59,6 +60,22 @@ public class TodoController {
         }
     }
     // TODO Get Todo by ID
+    @GetMapping(
+            value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<?> get(@PathVariable(value="id") String id) {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        GetTodoUseCase useCase = new GetTodoUseCase();
+        useCase.userId = userId;
+        useCase.id = id;
+
+        try {
+            return ResponseEntity.ok().body(useCase.execute());
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
+        }
+    }
     // TODO Complete a to by id
     // TODO Delete a To-Do
 }

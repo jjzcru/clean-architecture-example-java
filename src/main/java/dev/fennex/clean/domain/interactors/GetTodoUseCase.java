@@ -1,5 +1,6 @@
 package dev.fennex.clean.domain.interactors;
 
+import dev.fennex.clean.data.repository.TodoDataMemoryRepository;
 import dev.fennex.clean.domain.model.Todo;
 import dev.fennex.clean.domain.repository.TodoRepository;
 
@@ -8,17 +9,21 @@ public class GetTodoUseCase {
     public String id;
     public String userId;
 
+    public GetTodoUseCase() {
+        this.repository = new TodoDataMemoryRepository();
+    }
+
 
     public GetTodoUseCase(TodoRepository repository) {
         this.repository = repository;
     }
 
     public Todo execute() throws Exception {
-        if(this.userId == null) {
+        if (this.userId == null) {
             throw new Exception("Missing userId");
         }
 
-        if(this.id == null) {
+        if (this.id == null) {
             throw new Exception("Missing id");
         }
 
