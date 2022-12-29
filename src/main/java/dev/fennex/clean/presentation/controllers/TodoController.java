@@ -1,9 +1,6 @@
 package dev.fennex.clean.presentation.controllers;
 
-import dev.fennex.clean.domain.interactors.AddTodoUseCase;
-import dev.fennex.clean.domain.interactors.CompleteTodoUseCase;
-import dev.fennex.clean.domain.interactors.GetAllTodosUseCase;
-import dev.fennex.clean.domain.interactors.GetTodoUseCase;
+import dev.fennex.clean.domain.interactors.*;
 import dev.fennex.clean.domain.model.Todo;
 import dev.fennex.clean.presentation.controllers.error.RequestError;
 import org.springframework.http.MediaType;
@@ -93,7 +90,23 @@ public class TodoController {
             return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
         }
     }
-    // TODO Delete a To-Do
+
+    @DeleteMapping(
+            value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<?> delete(@PathVariable(value="id") String id) {
+        String userId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        DeleteTodoUseCase useCase = new DeleteTodoUseCase();
+        useCase.userId = userId;
+        useCase.id = id;
+
+        try {
+            return ResponseEntity.ok().body(useCase.execute());
+        } catch(Exception e) {
+            return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
+        }
+    }
 }
 
 class AddTodoRequest {
