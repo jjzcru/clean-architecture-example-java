@@ -20,10 +20,10 @@ public class LoginDataRepository implements LoginRepository {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             // The token will expire 1 hour
-            calendar.add(Calendar.HOUR_OF_DAY, 1);
+            calendar.add(Calendar.HOUR_OF_DAY, 12);
 
            return JWT.create()
-                   .withSubject("User details")
+                   .withSubject(Constants.JWT_SUBJECT)
                    .withClaim("userId", "0")
                    .withIssuedAt(new Date())
                    .withExpiresAt(calendar.getTime())
