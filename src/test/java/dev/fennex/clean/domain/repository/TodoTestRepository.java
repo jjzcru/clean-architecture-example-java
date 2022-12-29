@@ -48,6 +48,10 @@ public class TodoTestRepository implements TodoRepository {
             return instance;
         }
 
+        public Integer size() {
+            return this.data.size();
+        }
+
         public Todo add(Todo todo) {
             todo.id = UUID.randomUUID().toString();
             lastIdInserted = todo.id;

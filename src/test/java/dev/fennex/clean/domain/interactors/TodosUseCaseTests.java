@@ -64,4 +64,17 @@ public class TodosUseCaseTests {
         assertEquals(response.id, store.lastIdInserted);
         assertTrue(response.complete);
     }
+
+    @Test
+    void _5_testSuccessDeleteTodoById() throws Exception {
+        DeleteTodoUseCase useCase = new DeleteTodoUseCase(new TodoTestRepository(store));
+        useCase.userId = userId;
+        useCase.id = store.lastIdInserted;
+
+        Todo response = useCase.execute();
+        assertNotNull(response);
+        assertEquals(response.id, store.lastIdInserted);
+        assertTrue(response.complete);
+        assertEquals(store.size(), 0);
+    }
 }
