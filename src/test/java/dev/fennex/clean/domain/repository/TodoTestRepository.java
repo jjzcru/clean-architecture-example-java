@@ -30,41 +30,65 @@ public class TodoTestRepository implements TodoRepository {
 
     @Override
     public Todo complete(String userId, String id) {
-        return null;
+        return this.store.complete(userId, id);
     }
-    
+
     @Override
-    public Todo delete(String id) {
-        return null;
+    public Todo delete(String userId, String id) {
+        return this.store.delete(userId, id);
+    }
+
+    public static class Store {
+        private List<Todo> data = new ArrayList<>();
+        public String lastIdInserted = null;
+        private static final Store instance = new Store();
+        private Store() {}
+
+        public static Store getInstance() {
+            return instance;
+        }
+
+        public Todo add(Todo todo) {
+            todo.id = UUID.randomUUID().toString();
+            lastIdInserted = todo.id;
+            todo.createdAt = new Date();
+            this.data.add(todo);
+            return todo;
+        }
+
+        public List<Todo> getFromUser(String userId) {
+            return this.data.stream().filter(t -> t.userId.equals(userId))
+                    .collect(Collectors.toList());
+        }
+
+        public Todo getFromIdAndUser(String userId, String id) {
+            return this.data.stream().filter(t -> t.userId.equals(userId) && t.id.equals(id))
+                    .toList()
+                    .get(0);
+        }
+
+        public Todo complete(String userId, String id) {
+            this.data = this.data.stream()
+                    .map(t -> {
+                        if(t.userId.equals(userId) && t.id.equals(id)) {
+                            t.complete = true;
+                            t.completedAt = new Date();
+                        }
+                        return t;
+                    })
+                    .collect(Collectors.toList());
+            return this.getFromIdAndUser(userId, id);
+        }
+
+        public Todo delete(String userId, String id) {
+            Todo todo = getFromIdAndUser(userId, id);
+            this.data = this.data.stream().filter(t -> !(t.userId.equals(userId) && t.id.equals(id)))
+                    .toList();
+            return todo;
+        }
     }
 }
 
-class Store {
-    private final List<Todo> data = new ArrayList<>();
-    private static final Store instance = new Store();
-    private Store() {}
 
-    public static Store getInstance() {
-        return instance;
-    }
-
-    public Todo add(Todo todo) {
-        todo.id = UUID.randomUUID().toString();
-        todo.createdAt = new Date();
-        this.data.add(todo);
-        return todo;
-    }
-
-    public List<Todo> getFromUser(String userId) {
-        return this.data.stream().filter(t -> t.userId.equals(userId))
-                .collect(Collectors.toList());
-    }
-
-    public Todo getFromIdAndUser(String userId, String id) {
-        return this.data.stream().filter(t -> t.userId.equals(userId) && t.id.equals(id))
-                .toList()
-                .get(0);
-    }
-}
 
 

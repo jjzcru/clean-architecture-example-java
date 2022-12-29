@@ -9,5 +9,5 @@ public interface TodoRepository {
     Todo get(String userId, String id);
     Todo add(Todo todo);
     Todo complete(String userId, String id);
-    Todo delete(String id);
+    Todo delete(String userId, String id);
 }
