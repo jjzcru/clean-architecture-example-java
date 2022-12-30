@@ -1,15 +1,15 @@
 package dev.fennex.clean.data.repository;
 
-import java.util.List;
-
 import dev.fennex.clean.domain.model.Todo;
 import dev.fennex.clean.domain.repository.TodoRepository;
 
+import java.util.List;
+
 public class TodoDataRepository implements TodoRepository{
-    private TodoRepository repository;
+    private final TodoRepository repository;
     
     public TodoDataRepository() {
-        this.repository = new TodoDataMemoryRepository();
+        this.repository = new TodoDataFileRepository();
     }
 
     @Override
