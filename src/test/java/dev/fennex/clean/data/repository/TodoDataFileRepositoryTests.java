@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TodoDataFileRepositoryTests {
-    private TodoDataFileRepository repository;
+    private TodoDataRepository.TodoDataFileRepository repository;
     private final String userId = "0";
     @BeforeAll
     public void beforeAllTests() throws Exception {
-        repository = new TodoDataFileRepository();
+        repository = new TodoDataRepository.TodoDataFileRepository();
     }
 
     @Test
