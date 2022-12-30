@@ -3,7 +3,6 @@ package dev.fennex.clean.presentation.controllers;
 import dev.fennex.clean.domain.interactors.LoginUseCase;
 import dev.fennex.clean.domain.model.AuthenticationToken;
 import dev.fennex.clean.presentation.controllers.error.RequestError;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

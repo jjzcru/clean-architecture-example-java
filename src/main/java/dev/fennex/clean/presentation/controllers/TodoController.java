@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-
 @RestController
 @RequestMapping("/todos")
 public class TodoController {
@@ -57,7 +54,7 @@ public class TodoController {
             return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
         }
     }
-    // TODO Get Todo by ID
+    
     @GetMapping(
             value = "/{id}",
             produces = {MediaType.APPLICATION_JSON_VALUE}
@@ -74,6 +71,7 @@ public class TodoController {
             return ResponseEntity.internalServerError().body(new RequestError(e.getMessage()));
         }
     }
+    
     @PutMapping(
             value = "/{id}/complete",
             produces = {MediaType.APPLICATION_JSON_VALUE}
