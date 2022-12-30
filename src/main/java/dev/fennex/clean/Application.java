@@ -15,7 +15,16 @@ public class Application {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> System.out.println("The application is running on port :8080");
+        return args -> this.printEnv();
+    }
+
+    private void printEnv() {
+        System.out.println("The application is running on port :8080");
+        System.out.println("ENV VARIABLES");
+        System.out.println("STORAGE_TYPE: '"+System.getenv("STORAGE_TYPE")+"'");
+        System.out.println("WORKING_DIRECTORY: '"+System.getenv("WORKING_DIRECTORY")+"'");
+        System.out.println("JWT_ISSUER: '"+System.getenv("JWT_ISSUER")+"'");
+        System.out.println("JWT_SECRET: '"+System.getenv("JWT_SECRET")+"'");
     }
 
 }
