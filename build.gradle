@@ -24,6 +24,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-/*tasks.named('bootRun') {
+tasks.named('bootRun') {
 	environment 'STORAGE_TYPE', 'memory'
-}*/
+}
