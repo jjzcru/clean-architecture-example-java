@@ -1,5 +1,7 @@
 package dev.fennex.clean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Application {
+
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -19,12 +23,12 @@ public class Application {
     }
 
     private void printEnv() {
-        System.out.println("The application is running on port :8080");
-        System.out.println("ENV VARIABLES");
-        System.out.println("STORAGE_TYPE: '"+System.getenv("STORAGE_TYPE")+"'");
-        System.out.println("WORKING_DIRECTORY: '"+System.getenv("WORKING_DIRECTORY")+"'");
-        System.out.println("JWT_ISSUER: '"+System.getenv("JWT_ISSUER")+"'");
-        System.out.println("JWT_SECRET: '"+System.getenv("JWT_SECRET")+"'");
+        logger.info("The application is running on port :8080");
+        logger.info("ENV VARIABLES");
+        logger.info(String.format("STORAGE_TYPE: \"%s\"", System.getenv("STORAGE_TYPE")));
+        logger.info(String.format("WORKING_DIRECTORY: \"%s\"", System.getenv("WORKING_DIRECTORY")));
+        logger.info(String.format("JWT_ISSUER: \"%s\"", System.getenv("JWT_ISSUER")));
+        logger.info(String.format("JWT_SECRET: \"%s\"", System.getenv("JWT_SECRET")));
     }
 
 }
