@@ -33,7 +33,3 @@ This are the env variables that were used to build the application.
 | `WORKING_DIRECTORY` | `directory path` | <p>Is the directory that is used the the `file` storage type, it uses files to store the data of the application:</p><p>- `users.json`: Store the information about the users</p><p>- `todos.json`: Store the information about the `todos` and the `users` that are attach to it.|
 | `JWT_ISSUER`  | `string` | Is the application that is signing the `jwt` token.  |
 | `JWT_SECRET` | `string` | Is the secret used to sign the `jwt`. |
-
-
-
-
