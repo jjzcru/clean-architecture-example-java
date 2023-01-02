@@ -1,6 +1,4 @@
 package dev.fennex.clean.presentation.controllers.security;
-
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,12 +11,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration{
+public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors().and()
+                // .cors().and()
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers("/todos/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/").permitAll()
@@ -28,7 +26,6 @@ public class SecurityConfiguration{
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtFilter(), BasicAuthenticationFilter.class);
 
         return http.build();

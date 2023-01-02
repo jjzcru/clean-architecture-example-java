@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 
 public class TodoDataRepository implements TodoRepository{
     private final TodoRepository repository;
-    public String type = System.getenv("STORAGE_TYPE") != null ? System.getenv("STORAGE_TYPE") : "file";
+    public static final String STORAGE_TYPE = System.getenv("STORAGE_TYPE") != null ? System.getenv("STORAGE_TYPE") : "file";
     
     public TodoDataRepository() {
-        this.repository = type.equals("memory") ? new TodoDataMemoryRepository() : new TodoDataFileRepository();
+        this.repository = STORAGE_TYPE.equals("memory") ? new TodoDataMemoryRepository() : new TodoDataFileRepository();
     }
 
     @Override
@@ -52,7 +52,6 @@ public class TodoDataRepository implements TodoRepository{
 
     public static class TodoDataFileRepository implements TodoRepository {
         private String workspaceDir;
-        private Path usersFilePath;
         private Path todosFilePath;
 
         public TodoDataFileRepository() {
@@ -75,7 +74,7 @@ public class TodoDataRepository implements TodoRepository{
             this.validateWorkingDirectory();
 
             String fileSeparator = System.getProperty("file.separator");
-            usersFilePath = Path.of(this.workspaceDir, fileSeparator, "users.json");
+            Path usersFilePath = Path.of(this.workspaceDir, fileSeparator, "users.json");
             todosFilePath = Path.of(this.workspaceDir, fileSeparator, "todos.json");
 
             // Create the file that handle the users
@@ -156,7 +155,7 @@ public class TodoDataRepository implements TodoRepository{
                 ArrayList<Todo> outputList = gson.fromJson(contentString, listType);
                 List<Todo> todos = outputList.stream().filter(t -> t.userId.equals(userId) && t.id.equals(id))
                         .toList();
-                if(todos.size() > 0) {
+                if(!todos.isEmpty()) {
                     todo = todos.get(0);
                 }
 
@@ -251,7 +250,7 @@ public class TodoDataRepository implements TodoRepository{
 
         public static class Store {
             private List<Todo> data = new ArrayList<>();
-            public String lastIdInserted = null;
+            public  String lastIdInserted = null;
             private static final Store instance = new Store();
             private Store() {}
 

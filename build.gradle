@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.fennex'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = '17'
 
 repositories {
@@ -23,3 +23,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+/*tasks.named('bootRun') {
+	environment 'STORAGE_TYPE', 'memory'
+}*/
