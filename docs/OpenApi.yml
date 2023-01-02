@@ -1,0 +1,262 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Clean Architecture Example
+servers:
+  - url: http://localhost:8080
+paths:
+  /:
+    get:
+      summary: Health Check
+      operationId: healthCheck
+      description: |
+        This is an endpoint use for `health check` if the service is up.
+      tags:
+        - health
+      responses:
+        '200':
+          description: Return if the health check is success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /login:
+    post:
+      summary: Authenticate
+      description: |
+          This endpoint helps for authentication users, it uses a `json` body 
+          with the arguments `username` and `password`, it returns a `token` 
+          that is going to be used to identify the user.
+      operationId: login
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        '200':
+          description: Return authentication token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /todos:
+    get:
+      summary: Get Todo's
+      operationId: getTodos
+      description: |
+        This endpoints returns all the `todo` from the user, it requires an `Authorization` header to identify the user.
+      tags:
+        - todo
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Return the a list of todos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todos"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Add Todo
+      operationId: addTodo
+      description: |
+        This endpoint adds a todo, it requires an `Authorization` header to identify the user and requires a `json` body with property `content`.
+      tags:
+        - todo
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+      responses:
+        '200':
+          description: Return the created todo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /todos/{id}/complete:
+    put:
+      summary: Complete Todo
+      operationId: completeTodo
+      description: |
+        This endpoint `complete` an existing to do. It requires the `id` of 
+        the `todo` and the `Authorization` header to identify the user.
+      tags:
+        - todo
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the todo to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to be the todo that was removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /todos/{id}:
+    get:
+      summary: Get Todo By Id
+      operationId: getTodo
+      security:
+        - bearerAuth: []
+      description: |
+        This endpoint returns a `todo` by its `id`. It requires the 
+        `Authorization` header to identify the user.
+      tags:
+        - todo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the todo to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to be the todo that was removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete Todo
+      operationId: deleteTodo
+      security:
+        - bearerAuth: []
+      description: |
+        This endpoint delete an existing todo. It requires an `Authorization` 
+        header to identify the user and an `id` for the `todo` that needs to 
+        be removed.
+      tags:
+        - todo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the todo to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to be the todo that was removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  schemas:
+    Health:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+    Credentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Token:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+    Todos:
+      type: array
+      items:
+        $ref: '#/components/schemas/Todo'
+    Todo:
+      type: object
+      required:
+        - content
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        complete:
+          type: boolean
+        content: 
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.fennex'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = '17'
 
 repositories {
@@ -15,8 +15,15 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'com.auth0:java-jwt:4.2.1'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.google.code.gson:gson:2.10'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+/*tasks.named('bootRun') {
+	environment 'STORAGE_TYPE', 'memory'
+}*/
